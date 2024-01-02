@@ -1,6 +1,7 @@
 import time
 
 # Ask user for numbers to multiply
+
 try:
     value_1 = float(input("value 1: ")) # first number to multiply
     value_2 = float(input("value 2: ")) # second number to multiply
@@ -22,7 +23,7 @@ def value_shift(value):
         if x[1] == ".":
             shift += x[0]
             del flip_value[x[0]]
-    return "".join(x for x in flip_value[::-1])
+            return "".join(x for x in flip_value[::-1])
 
 
 shift = 0
@@ -35,9 +36,37 @@ print(shift)
 
 # Calculation
 
-answer = 0
-for _ in range(new_value_1):
-    answer += new_value_2
+def calculation(base, multiplier):
+    magnitudes = [base, 1]
+    magadd = magnitudes[0]
+    while magadd <= multiplier:
+        for x in range(base - 1):
+            magadd += magnitudes[0]
+        magnitudes.insert(0, magadd)
+
+    based_number = []
+    for x in magnitudes:
+        total_mag = 0
+        while x <= multiplier:
+            multiplier -= x
+            total_mag += 1
+        based_number.append(total_mag)
+
+    del based_number[0]
+    based_number.append(0)
+
+    answer = 0
+    for x in enumerate(magnitudes):
+        for y in range(based_number[x[0]]):
+            answer += x[1]
+    return answer
+
+
+if new_value_1 - new_value_2 > 0:
+    answer = calculation(new_value_2, new_value_1)
+else:
+    answer = calculation(new_value_1, new_value_2)
+
 
 if shift != 0:
     answer = str(answer)[:-shift] + "." + str(answer)[-shift:]
@@ -48,12 +77,12 @@ end_time = time.perf_counter()
 print(f"Time taken: {end_time - start_time}")
 
 # add negative number support :)
-# change calculation code so that it changes base and adds 0s to the end? could possibly work ngl...
 # maybe make a gui for it too using tkinter? LMAOOOOO
+# I really gotta figure out how classes work, as I've never learnt them and they seem necessary here
 
 
-# 4.5 and 3.6 took 0.0001313779503107071 seconds
-# 1003 and 2819 took 0.00016665802104398608 seconds
-# 23436362 and 54345342 took 1.1789906630292535 seconds
+# 4.5 and 3.6 took 0.0001405780203640461 seconds
+# 1003 and 2819 took 0.00018717796774581075 seconds
+# 23436362 and 54345342 took 0.8370736400247552 seconds
 # 10212.1213 and 2839472.65925 took 4.516522707999684 seconds
 # use 2839472.65925 and 10212.1213 as example in future, took too long this test
