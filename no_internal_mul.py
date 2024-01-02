@@ -14,21 +14,16 @@ start_time = time.perf_counter()
 
 def value_shift(value):
     global shift
-    split_value = list(str(value))
-    largest_decimal = 0
-    for x in range(len(split_value)):
-        digit = split_value[-(x + 1)]
-        try:
-            if int(digit) > largest_decimal: 
-                largest_decimal = int(digit)
-        except ValueError:
-            if largest_decimal != 0: 
-                shift += x
-                return str(value).replace(".", "")
-            else:
-                return str(value).replace(".0", "")
+    flip_value = list(str(value)[::-1])
+    print(flip_value)
+    if flip_value[0] == "0":
+        del flip_value[0:1]
+    for x in enumerate(flip_value):
+        if x[1] == ".":
+            shift += x[0]
+            del flip_value[x[0]]
+    return "".join(x for x in flip_value[::-1])
 
-# potentially change to reversing the text so decimal point is more convenient
 
 shift = 0
 new_value_1 = int(value_shift(value_1))
@@ -55,3 +50,10 @@ print(f"Time taken: {end_time - start_time}")
 # add negative number support :)
 # change calculation code so that it changes base and adds 0s to the end? could possibly work ngl...
 # maybe make a gui for it too using tkinter? LMAOOOOO
+
+
+# 4.5 and 3.6 took 0.0001313779503107071 seconds
+# 1003 and 2819 took 0.00016665802104398608 seconds
+# 23436362 and 54345342 took 1.1789906630292535 seconds
+# 10212.1213 and 2839472.65925 took 4.516522707999684 seconds
+# use 2839472.65925 and 10212.1213 as example in future, took too long this test
